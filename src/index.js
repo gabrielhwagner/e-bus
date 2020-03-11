@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text} from 'react-native';
+import Reactotron from 'reactotron-react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
@@ -11,6 +12,7 @@ import Main from '~/pages/Main';
 const Stack = createStackNavigator();
 
 function App() {
+  Reactotron.log('Rodou');
   return (
     <NavigationContainer>
       <Stack.Navigator>
