@@ -54,6 +54,7 @@ const Main = () => (
       style={styles.logo}
       resizeMode="contain"
     />
+    {/* <StatusBar backgroundColor="blue" barStyle="light-content" /> */}
     <Text style={styles.welcome}>Bem-vindo ao Template Básico!</Text>
     <Text style={styles.instructions}>
       Essa é a tela principal da sua aplicação =)
