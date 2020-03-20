@@ -1,10 +1,17 @@
 import styled from 'styled-components/native';
 
-import { background } from '~/assets/css/Colors';
+import { dark } from '~/assets/css/Colors';
 
 const Container = styled.View`
   flex: 1;
-  background-color: ${background};
+  background-color: ${dark};
 `;
 
-export { Container };
+const Options = styled.View`
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+`;
+export { Container, Options };

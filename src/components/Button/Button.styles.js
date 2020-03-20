@@ -1,8 +1,9 @@
 import styled from 'styled-components/native';
 
-import { verde } from '~/assets/css/Colors';
+import { azul, verde, azulDois, verdeDois } from '~/assets/css/Colors';
 
 const ButtonStyle = styled.TouchableOpacity`
+  height: 45;
   border-radius: 10;
   background-color: ${verde};
   justify-content: center;

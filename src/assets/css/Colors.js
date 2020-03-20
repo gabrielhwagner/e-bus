@@ -12,6 +12,9 @@ const azulDois = '#36A0E5';
 
 const background = '#F7F8FD';
 
+const dark = '#130c20';
+const darkDois = '#221539';
+
 export {
   primaryBlue,
   darkBlue,
@@ -23,4 +26,6 @@ export {
   azul,
   azulDois,
   background,
+  dark,
+  darkDois,
 };
