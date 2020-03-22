@@ -12,9 +12,9 @@ export default function Login() {
   const [user, setUser] = useState('Bla');
   const [password, setPassword] = useState('');
   function login() {
-    if (user === 'admin' && password === '123') {
-      navigation.navigate('Main');
-    }
+    navigation.navigate('Main');
+    // if (user === 'admin' && password === '123') {
+    // }
   }
   return (
     <Container>
