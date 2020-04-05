@@ -9,7 +9,7 @@ export default function Main() {
   return (
     <Container>
       <StatusBar barStyle="light-content" backgroundColor={dark} />
-      <Header />
+      <Header title="Home" />
       <ScrollView>
         <Options>
           <Card />

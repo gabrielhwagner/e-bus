@@ -8,7 +8,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import Main from '~/pages/Main';
-import Mapa from '~/pages/Mapa';
+import ItineraryRoutes from './Itinerary.routes';
 
 const Drawer = createDrawerNavigator();
 
@@ -34,18 +34,19 @@ export default function() {
       drawerContent={CustomDrawerContent}
       drawerType="back">
       <Drawer.Screen
+        name="Home"
+        component={Main}
         options={{
           drawerIcon: ({ focused, color }) => (
             <Icon name={'ios-home'} size={24} color={color} />
           ),
         }}
-        name="Home"
-        component={Main}
       />
       <Drawer.Screen
-        name="Mapa"
-        component={Mapa}
+        name="Itinerary"
+        component={ItineraryRoutes}
         options={{
+          drawerLabel: 'Itinerário',
           drawerIcon: ({ focused, color }) => (
             <Icon name={'ios-map'} size={24} color={color} />
           ),

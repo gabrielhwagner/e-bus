@@ -129,6 +129,10 @@ const getDadosItinerario = () => ({
         complemento: 'Prédio esquina',
         cep: '91140-300',
       },
+      coordinates: {
+        latitude: -29.986797,
+        longitude: -51.115147,
+      },
     },
     {
       nome: 'Miguel Davi',
@@ -140,6 +144,10 @@ const getDadosItinerario = () => ({
         numero: '2611',
         complemento: 'Wallig',
         cep: '91010-004',
+      },
+      coordinates: {
+        latitude: -30.010883,
+        longitude: -51.160388,
       },
     },
     {
@@ -153,6 +161,10 @@ const getDadosItinerario = () => ({
         complemento: 'Iguatemi',
         cep: '91340-000',
       },
+      coordinates: {
+        latitude: -30.024924,
+        longitude: -51.162926,
+      },
     },
     {
       nome: 'Sophia Giovanna',
@@ -165,9 +177,14 @@ const getDadosItinerario = () => ({
         complemento: 'Moinhos de Vento',
         cep: '90570-070',
       },
+      coordinates: {
+        latitude: -30.023824,
+        longitude: -51.201528,
+      },
     },
     {
       nome: 'Giovanna Sophia',
+      tipo: 'PASSAGEIRO',
       endereco: {
         logradouro: 'Av. Praia de Belas',
         bairro: 'Praia de Belas',
@@ -175,6 +192,10 @@ const getDadosItinerario = () => ({
         numero: '1181',
         complemento: 'Praia de Belas',
         cep: '90110-001',
+      },
+      coordinates: {
+        latitude: -30.04934,
+        longitude: -51.227949,
       },
     },
     {
@@ -188,6 +209,10 @@ const getDadosItinerario = () => ({
         complemento: 'Barra',
         cep: '90810-080',
       },
+      coordinates: {
+        latitude: -30.084676,
+        longitude: -51.247381,
+      },
     },
     {
       nome: 'UniRitter campus zona sul',
@@ -199,6 +224,10 @@ const getDadosItinerario = () => ({
         numero: '555',
         complemento: 'Uniritter',
         cep: '90840-440',
+      },
+      coordinates: {
+        latitude: -30.080146,
+        longitude: -51.218701,
       },
     },
   ],

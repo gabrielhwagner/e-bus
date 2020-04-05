@@ -10,7 +10,6 @@ import Login from '~/pages/Login/Login';
 const Stack = createStackNavigator();
 
 export default function Tste(props) {
-  console.log('test', props);
   return (
     <Stack.Navigator initialRouteName="Login">
       <Stack.Screen
