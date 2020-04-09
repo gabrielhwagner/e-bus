@@ -3,9 +3,14 @@ import MapViewDirections from 'react-native-maps-directions';
 import { GOOGLE_KEY } from '~/utils';
 
 export default function MapViewDiretions(props) {
-  const waypoints = props.waypoints.map(local => {
-    return local.coordinates;
-  });
+  let waypoints;
+  if (props.waypoints) {
+    waypoints = props.waypoints.map(local => {
+      return local.coordinates;
+    });
+  } else {
+    waypoints = [];
+  }
   return (
     <MapViewDirections
       origin={props.origin}

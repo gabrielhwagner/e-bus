@@ -15,6 +15,8 @@ const background = '#F7F8FD';
 const dark = '#130c20';
 const darkDois = '#221539';
 
+const red = '#B90933';
+
 export {
   primaryBlue,
   darkBlue,
@@ -28,4 +30,5 @@ export {
   background,
   dark,
   darkDois,
+  red,
 };

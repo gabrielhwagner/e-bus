@@ -1,26 +1,28 @@
 import React from 'react';
-import { ScrollView, Text, Button } from 'react-native';
+import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { Header } from '~/components';
-import { Container } from './Itinerary.styles';
+import { Header, ItineraryCard } from '~/components';
+import { Container, Item } from './Itinerary.styles';
+import { getItinarios } from '~/mocks/Itinerarios';
 
 export default function Itinerary() {
   const navigation = useNavigation();
 
+  const itinerarys = getItinarios();
   return (
     <Container>
       <Header title="Itinerario" />
-      <Text>Itinerario</Text>
       <ScrollView>
-        <Button
-          title="Ver passageiros"
-          onPress={() => navigation.navigate('PassengerList')}
-        />
-        <Button
-          title="Ver rota"
-          onPress={() => navigation.navigate('Preview')}
-        />
+        {itinerarys.map(itinerary => (
+          <Item>
+            <ItineraryCard
+              onPreview={() => navigation.navigate('Preview')}
+              onPassenger={() => navigation.navigate('PassengerList')}
+              itinerary={itinerary}
+            />
+          </Item>
+        ))}
       </ScrollView>
     </Container>
   );

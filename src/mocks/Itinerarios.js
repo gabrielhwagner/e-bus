@@ -7,6 +7,7 @@ const getItinarios = () => [
     numeroPassageiros: 6,
     destinoFinal: 'Uniritter',
     descricao: 'Rota até a uniritter',
+    status: 'CONCLUIDA',
   },
   {
     id: 2,
@@ -15,6 +16,7 @@ const getItinarios = () => [
     numeroPassageiros: 8,
     destinoFinal: 'Garagem',
     descricao: 'Rota de retorno da uniritter',
+    status: 'PENDENTE',
   },
   {
     id: 3,
@@ -23,6 +25,7 @@ const getItinarios = () => [
     numeroPassageiros: 15,
     destinoFinal: 'Uniritter',
     descricao: 'Rota de ida para a uniritter',
+    status: 'PENDENTE',
   },
   {
     id: 4,
@@ -31,6 +34,7 @@ const getItinarios = () => [
     numeroPassageiros: 15,
     destinoFinal: 'Garagem',
     descricao: 'Rota de volta da uniritter',
+    status: 'PENDENTE',
   },
 ];
 
@@ -41,6 +45,7 @@ const getPassageirosItinerario = () => ({
   destinoFinal: 'Uniritter',
   passageiros: [
     {
+      id: 1,
       nome: 'Claudia Ramos',
       endereco: {
         logradouro: 'Rua magistério',
@@ -52,6 +57,7 @@ const getPassageirosItinerario = () => ({
       },
     },
     {
+      id: 2,
       nome: 'Miguel Davi',
       endereco: {
         logradouro: 'Av. Assis Brasil',
@@ -63,6 +69,7 @@ const getPassageirosItinerario = () => ({
       },
     },
     {
+      id: 3,
       nome: 'Davi Miguel',
       endereco: {
         logradouro: 'Av. João Wallig',
@@ -74,6 +81,7 @@ const getPassageirosItinerario = () => ({
       },
     },
     {
+      id: 4,
       nome: 'Sophia Giovanna',
       endereco: {
         logradouro: 'R. Olávo Barreto Viana',
@@ -85,6 +93,7 @@ const getPassageirosItinerario = () => ({
       },
     },
     {
+      id: 5,
       nome: 'Giovanna Sophia',
       endereco: {
         logradouro: 'Av. Praia de Belas',
@@ -96,6 +105,7 @@ const getPassageirosItinerario = () => ({
       },
     },
     {
+      id: 6,
       nome: 'Helena Sophia',
       endereco: {
         logradouro: 'Av. Diário de Notícias',

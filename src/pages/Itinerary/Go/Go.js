@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Text, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import MapsService from '~/services/DirectionsService';
 
 import { MapViewDiretions, Button } from '~/components';
-import { getPixelSize } from '~/utils';
 import { getDadosItinerario } from '~/mocks/Itinerarios';
 import { azul, dark } from '~/assets/css/Colors';
+import iconPassenger from '~/assets/images/marker.png';
+import iconCar from '~/assets/images/icon-car.png';
 
 class Go extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      description: null,
+      informations: null,
       itinerary: null,
-      finalLocation: null,
       userLocation: null,
-      waypoints: null,
       isComplete: false,
     };
     this.mapView;
@@ -26,7 +26,9 @@ class Go extends Component {
     Geolocation.getCurrentPosition(
       ({ coords: { longitude, latitude } }) => {
         const userLocation = { latitude, longitude };
-        this.setLocations(userLocation);
+        this.setState({ userLocation }, () => {
+          this.searchItinerary();
+        });
       },
       () => {
         Alert.alert('Erro ao buscar a localização');
@@ -40,7 +42,9 @@ class Go extends Component {
     Geolocation.watchPosition(
       ({ coords: { latitude, longitude } }) => {
         const userLocation = { latitude, longitude };
-        this.setLocations(userLocation);
+        this.setState({ userLocation }, () => {
+          this.searchItinerary();
+        });
       },
       () => {
         Alert.alert('Erro ao buscar a localização');
@@ -48,66 +52,91 @@ class Go extends Component {
       {
         maximumAge: 3600000,
         enableHighAccuracy: true,
-        distanceFilter: 50,
+        distanceFilter: 10,
       },
     );
   }
-  //   MapsService.searchOrderWaypoints(
-  //     userLocation,
-  //     finalLocation.coordinates,
-  //     itinerary.locais,
-  //   )
-  //     .then(res => {
-  //       console.log('>>HUSGUDGD', res);
-  //     })
-  //     .catch(err => {
-  //       console.log('>>HUSGUDGD', err);
-  //     });
-  // }
-  setLocations(userLocation) {
+
+  searchItinerary() {
+    if (this.state.isComplete) {
+      return;
+    }
     const itinerary = getDadosItinerario();
-    this.setState({
-      description: itinerary.descricao,
-    });
     const finalLocation = itinerary.locais.pop();
-    this.setState(
-      {
-        userLocation,
-        waypoints: itinerary.locais,
-        finalLocation,
-      },
-      () => {
-        this.setState({
-          isComplete: true,
-        });
-      },
+
+    MapsService.searchOrderWaypoints(
+      this.state.userLocation,
+      finalLocation.coordinates,
+      itinerary.locais,
+    )
+      .then(({ data }) => {
+        this.setOrderWaypoints(
+          itinerary,
+          data.routes[0].waypoint_order,
+          finalLocation,
+        );
+      })
+      .catch(() => Alert.alert('Erro ao iniciar'));
+  }
+
+  setOrderWaypoints(itinerary, order, finalLocation) {
+    const itineraryOrder = order.map((point, index) => {
+      return {
+        ...itinerary.locais[point],
+        active: index === 0,
+      };
+    });
+    itineraryOrder.push({ ...finalLocation, active: false });
+    console.log(itineraryOrder);
+    this.setState({ itinerary: itineraryOrder }, () =>
+      this.setState({ isComplete: true }),
     );
   }
 
   onReady = result => {
     const distance = result.distance;
     const duration = result.duration / 60;
-    console.log('onReady', result);
+
     this.setState({
-      itinerary: {
+      informations: {
         distance: distance.toFixed(2),
         duration: duration.toFixed(2),
       },
     });
 
-    this.mapView.fitToCoordinates(result.coordinates, {
-      edgePadding: {
-        right: getPixelSize(30),
-        bottom: getPixelSize(60),
-        left: getPixelSize(30),
-        top: getPixelSize(0),
-      },
-    });
+    this.setCamera();
   };
 
-  startItinerary() {
+  setCamera() {
+    const camera = {
+      center: this.state.userLocation,
+      pitch: 30,
+      zoom: 18,
+    };
+    this.mapView.setCamera(camera);
+  }
+
+  get itineraryActive() {
+    return this.state.itinerary.find(point => point.active);
+  }
+
+  changeItinerary() {
+    const pointActiveIndex = this.state.itinerary.findIndex(
+      point => point.active,
+    );
+
+    if (pointActiveIndex === this.state.itinerary.length - 1) {
+      return this.displayAlert();
+    }
+    this.state.itinerary[pointActiveIndex].active = false;
+    this.state.itinerary[pointActiveIndex + 1].active = true;
+
+    this.setState({ itinerary: this.state.itinerary });
+  }
+
+  displayAlert() {
     Alert.alert(
-      'Deseja iniciar o itinerário?',
+      'Concluir Itinerário',
       '',
       [
         {
@@ -116,16 +145,16 @@ class Go extends Component {
           style: 'cancel',
         },
         {
-          text: 'Iniciar',
-          onPress: () => this.props.navigation.navigate('Go'),
+          text: 'Sim',
+          onPress: () => this.props.navigation.navigate('Itinerary'),
         },
       ],
       { cancelable: false },
     );
   }
 
-  onStart = r => {
-    console.log('onStart', r);
+  onStart = () => {
+    console.log('ONSTART');
   };
 
   render() {
@@ -135,54 +164,62 @@ class Go extends Component {
           ref={ref => (this.mapView = ref)}
           style={styles.mapView}
           loadingEnabled
+          followUserLocation={true}
           showsUserLocation>
           {this.state.isComplete && (
             <>
               <MapViewDiretions
                 origin={this.state.userLocation}
-                waypoints={this.state.waypoints}
-                destination={this.state.finalLocation}
+                destination={this.itineraryActive}
                 optimizeWaypoints={false}
                 onStart={this.onStart}
                 onReady={this.onReady}
               />
               <Marker
-                coordinate={{
-                  latitude: this.state.finalLocation.coordinates.latitude,
-                  longitude: this.state.finalLocation.coordinates.longitude,
-                }}
-                title={this.state.finalLocation.nome}
-                description={this.state.finalLocation.tipo}
+                coordinate={this.itineraryActive.coordinates}
+                title={this.itineraryActive.nome}
+                description={this.itineraryActive.tipo}
+                icon={iconPassenger}
               />
             </>
           )}
         </MapView>
-        {this.state.itinerary !== null && (
+
+        {this.state.informations !== null && (
           <View style={styles.description}>
             <View>
               <Text style={styles.title}>
                 Nome:
-                <Text style={styles.response}> {this.state.description}</Text>
+                <Text style={styles.response}>
+                  {' '}
+                  {this.itineraryActive.nome}
+                </Text>
               </Text>
               <Text style={styles.title}>
                 Tempo médio:
                 <Text style={styles.response}>
                   {' '}
-                  {this.state.itinerary.duration} h
+                  {this.state.informations.duration} h
                 </Text>
               </Text>
               <Text style={styles.title}>
                 Distância total:
                 <Text style={styles.response}>
                   {' '}
-                  {this.state.itinerary.distance} km
+                  {this.state.informations.distance} km
                 </Text>
               </Text>
             </View>
+            {/* <Button
+              style={styles.button}
+              onPress={() => this.changeItinerary()}
+              title="Não embarcou"
+            /> */}
+
             <Button
               style={styles.button}
-              onPress={() => this.startItinerary()}
-              title="Iniciar"
+              onPress={() => this.changeItinerary()}
+              title="Embarcou"
             />
           </View>
         )}

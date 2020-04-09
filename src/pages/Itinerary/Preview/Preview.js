@@ -7,7 +7,8 @@ import { MapViewDiretions, Button } from '~/components';
 import { getPixelSize } from '~/utils';
 import { getDadosItinerario } from '~/mocks/Itinerarios';
 import { azul, dark } from '~/assets/css/Colors';
-import MapsService from '~/services/DirectionsService';
+import iconPassenger from '~/assets/images/marker.png';
+import iconUm from '~/assets/images/icon-college.png';
 
 class Preview extends Component {
   constructor(props) {
@@ -128,7 +129,7 @@ class Preview extends Component {
                 origin={this.state.userLocation}
                 waypoints={this.state.waypoints}
                 destination={this.state.finalLocation}
-                optimizeWaypoints={false}
+                optimizeWaypoints={true}
                 onStart={() => {}}
                 onReady={this.onReady}
               />
@@ -139,6 +140,7 @@ class Preview extends Component {
                     latitude: coordinates.latitude,
                     longitude: coordinates.longitude,
                   }}
+                  image={iconPassenger}
                   title={nome}
                   description={tipo}
                 />
@@ -148,6 +150,7 @@ class Preview extends Component {
                   latitude: this.state.finalLocation.coordinates.latitude,
                   longitude: this.state.finalLocation.coordinates.longitude,
                 }}
+                image={iconUm}
                 title={this.state.finalLocation.nome}
                 description={this.state.finalLocation.tipo}
               />

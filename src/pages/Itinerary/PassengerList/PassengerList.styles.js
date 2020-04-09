@@ -12,4 +12,13 @@ const Item = styled.View`
   margin-bottom: 15px;
 `;
 
-export { Container, Item };
+const Title = styled.Text`
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  padding: 0 20px;
+  margin-bottom: 20px;
+  text-align: center;
+`;
+
+export { Container, Title, Item };
