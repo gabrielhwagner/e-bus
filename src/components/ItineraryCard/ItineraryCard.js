@@ -26,25 +26,40 @@ export default function ItineraryCard(props) {
           </Description>
         </Passenger>
       </View>
-      <Buttons center={props.itinerary.status !== 'PENDENTE'}>
+      <Buttons
+        center={props.itinerary.status !== 'PENDENTE' || props.onLocation}>
         {props.itinerary.status === 'PENDENTE' ? (
           <>
-            <Button color={azul}>
-              <Icon
-                onPress={props.onPassenger}
-                name={'users'}
-                size={32}
-                color={'#ffffff'}
-              />
-            </Button>
-            <Button color={verde}>
-              <Icon
-                onPress={props.onPreview}
-                name={'direction'}
-                size={32}
-                color={'#ffffff'}
-              />
-            </Button>
+            {props.onPassenger && (
+              <Button color={azul}>
+                <Icon
+                  onPress={props.onPassenger}
+                  name={'users'}
+                  size={32}
+                  color={'#ffffff'}
+                />
+              </Button>
+            )}
+            {props.onPreview && (
+              <Button color={verde}>
+                <Icon
+                  onPress={props.onPreview}
+                  name={'direction'}
+                  size={32}
+                  color={'#ffffff'}
+                />
+              </Button>
+            )}
+            {props.onLocation && (
+              <Button color={azul}>
+                <Icon
+                  onPress={props.onLocation}
+                  name={'location'}
+                  size={32}
+                  color={'#ffffff'}
+                />
+              </Button>
+            )}
           </>
         ) : (
           <Button color={verdeDois}>
