@@ -7,7 +7,6 @@ class MapsService {
       destination: `${destination.latitude},${destination.longitude}`,
       waypoints: converterWaypoints(waypoints),
     };
-    console.log('CHAMOU');
     const params = converterURL(data);
     const url = `https://maps.googleapis.com/maps/api/directions/json?${params}&key=AIzaSyAdKYWYO_o_v7ov3qYQu5l_5Qcm3-WJ3T4`;
     return axios.get(url);

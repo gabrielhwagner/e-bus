@@ -9,6 +9,7 @@
 
 Rodar
 emulator -avd Nexus_5X_API_29_x86
+emulator -avd Nexus_7_API_29
 
 
 [![npm](https://img.shields.io/npm/v/react-native-template-rocketseat-basic.svg?label=npm%20package)](https://www.npmjs.com/package/react-native-template-rocketseat-basic)

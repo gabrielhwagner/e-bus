@@ -5,12 +5,13 @@ import Itinerary from '~/pages/Itinerary/Itinerary';
 import Preview from '~/pages/Itinerary/Preview/Preview';
 import Go from '~/pages/Itinerary/Go/Go';
 import PassengerList from '~/pages/Itinerary/PassengerList/PassengerList';
+import Location from '~/pages/Itinerary/Location/Location';
 
 const Stack = createStackNavigator();
 
 export default function ItineraryRoute() {
   return (
-    <Stack.Navigator initialRouteName="Itinerary">
+    <Stack.Navigator initialRouteName="Location">
       <Stack.Screen
         name="Itinerary"
         component={Itinerary}
@@ -20,6 +21,11 @@ export default function ItineraryRoute() {
       <Stack.Screen
         name="PassengerList"
         component={PassengerList}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Location"
+        component={Location}
         options={{ headerShown: false }}
       />
       <Stack.Screen
