@@ -30,6 +30,7 @@ class Login extends Component {
     const token = await AsyncStorage.getItem('@CodeApi:token');
     const user = await AsyncStorage.getItem('@CodeApi:user');
     if (token && user) {
+      console.log('LOGADO');
       this.authStore.setAuth(JSON.parse(user), token);
       this.props.navigation.navigate('Main');
     }
@@ -37,6 +38,7 @@ class Login extends Component {
 
   login = async () => {
     try {
+      console.log('LOGIN');
       this.setState({ loading: true });
       const { email, password } = this.authStore;
 

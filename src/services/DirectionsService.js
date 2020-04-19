@@ -1,6 +1,6 @@
 import axios from './api';
 
-class MapsService {
+class DirectionsService {
   searchOrderWaypoints(origin, destination, waypoints) {
     const data = {
       origin: `${origin.latitude},${origin.longitude}`,
@@ -31,4 +31,4 @@ function converterWaypoints(waypoints) {
   return string;
 }
 
-export default new MapsService();
+export default new DirectionsService();

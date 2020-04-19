@@ -1,8 +1,9 @@
 import axios from './api';
+import { URL_API } from '~/utils';
 
 class AuthService {
   login(email, password) {
-    const url = 'https://ebus-backend.herokuapp.com/auth';
+    const url = `${URL_API}/auth`;
     return axios.post(url, { email, password });
   }
 }

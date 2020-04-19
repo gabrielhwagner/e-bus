@@ -12,16 +12,7 @@ class Itinerary extends Component {
   constructor(props) {
     super();
     this.authStore = props.store.AuthStore;
-    console.log(this.authStore.isPassenger);
   }
-
-  onPreview = () => {
-    this.props.navigation.navigate('Preview');
-  };
-
-  onPassenger = () => {
-    this.props.navigation.navigate('PassengerList');
-  };
 
   onLocation = () => {
     this.props.navigation.navigate('Location');
@@ -35,18 +26,10 @@ class Itinerary extends Component {
         <ScrollView>
           {itinerarys.map(itinerary => (
             <Item key={itinerary.id}>
-              {this.authStore.isPassenger ? (
-                <ItineraryCard
-                  onLocation={() => this.onLocation()}
-                  itinerary={itinerary}
-                />
-              ) : (
-                <ItineraryCard
-                  onPreview={() => this.onPreview()}
-                  onPassenger={() => this.onPassenger()}
-                  itinerary={itinerary}
-                />
-              )}
+              <ItineraryCard
+                onLocation={() => this.onLocation()}
+                itinerary={itinerary}
+              />
             </Item>
           ))}
         </ScrollView>

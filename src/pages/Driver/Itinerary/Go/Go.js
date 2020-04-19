@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Text, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
-import MapsService from '~/services/DirectionsService';
+
+import DirectionsService from '~/services/DirectionsService';
 
 import { MapViewDiretions, Button } from '~/components';
 import { getDadosItinerario } from '~/mocks/Itinerarios';
@@ -64,7 +65,7 @@ class Go extends Component {
     const itinerary = getDadosItinerario();
     const finalLocation = itinerary.locais.pop();
 
-    MapsService.searchOrderWaypoints(
+    DirectionsService.searchOrderWaypoints(
       this.state.userLocation,
       finalLocation.coordinates,
       itinerary.locais,

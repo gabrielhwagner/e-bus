@@ -1,27 +1,47 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { observer, inject } from 'mobx-react';
 import { createStackNavigator } from '@react-navigation/stack';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
 
-import { gray, background } from '~/assets/css/Colors';
-import Main from './Main.routes';
+import MainPassenger from './Passenger/Main.routes';
+import MainDriver from './Driver/Main.routes';
 import Login from '~/pages/Login/Login';
 
 const Stack = createStackNavigator();
 
-export default function Tste(props) {
-  return (
-    <Stack.Navigator initialRouteName="Login">
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Main"
-        component={Main}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
-  );
+@inject('store')
+@observer
+class Routes extends Component {
+  constructor(props) {
+    super();
+    this.authStore = props.store.AuthStore;
+    console.log('constr', this.authStore.isPassenger);
+  }
+
+  render() {
+    console.log('render', this.authStore.isPassenger);
+    return (
+      <Stack.Navigator initialRouteName="Login">
+        {this.authStore.isPassenger ? (
+          <Stack.Screen
+            name="Main"
+            component={MainPassenger}
+            options={{ headerShown: false }}
+          />
+        ) : (
+          <Stack.Screen
+            name="Main"
+            component={MainDriver}
+            options={{ headerShown: false }}
+          />
+        )}
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    );
+  }
 }
+
+export default Routes;
