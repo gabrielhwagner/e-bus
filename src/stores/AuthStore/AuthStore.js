@@ -5,6 +5,7 @@ export class AuthStore {
   @observable password = '';
 
   @observable user = {};
+  @observable token = {};
 
   @action
   onChangeInputs(input, value) {
@@ -12,8 +13,10 @@ export class AuthStore {
   }
 
   @action
-  setUser(user) {
+  setAuth(user, token) {
+    this.token = token;
     this.user = user;
+    console.log(token, user);
   }
 
   get isPassenger() {

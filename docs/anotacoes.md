@@ -32,15 +32,12 @@ Passageiro
     └── Notificações
 ```
 
-### Ideias
+### Tecnologias
 
-Home
-  Opções com rotas 
-  Ter notificações (#Notificações)
+##### Notificações
+OneSignal
+Site Admin
+https://app.onesignal.com/
 
-App - Itinerarios - Listagem
-
-  Escolher dia - default dia atual
-
-  Dados de cada itinerario
-  Turno | horario de inicio | ver pessoas (#Pessoas) | ?Preview | Iniciar Rota 
+Rest
+https://documentation.onesignal.com/reference#create-an-app

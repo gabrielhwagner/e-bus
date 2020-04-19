@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
-import { KeyboardAvoidingView, StatusBar, Alert } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  StatusBar,
+  Alert,
+  AsyncStorage,
+} from 'react-native';
+
 import { observer, inject } from 'mobx-react';
+import OneSignal from 'react-native-onesignal'; // Import package from node modules
 
 import AuthService from '~/services/AuthService';
 import ButtonDefault from '~/components/Button/Button';
@@ -19,24 +26,42 @@ class Login extends Component {
     };
   }
 
-  login = () => {
-    this.setState({ loading: true });
-    const { email, password } = this.authStore;
+  async componentDidMount() {
+    const token = await AsyncStorage.getItem('@CodeApi:token');
+    const user = await AsyncStorage.getItem('@CodeApi:user');
+    if (token && user) {
+      this.authStore.setAuth(JSON.parse(user), token);
+      this.props.navigation.navigate('Main');
+    }
+  }
 
-    AuthService.login(email, password)
-      .then(({ data }) => {
-        this.setState({ loading: false });
-        console.log('RETORNO', this.authStore);
-        this.authStore.setUser(data);
-        this.props.navigation.navigate('Main');
-      })
-      .catch(err => {
-        if (err.status === 401) {
-          Alert.alert('Usuário ou senha inválidos');
-        }
-        this.setState({ loading: false });
-      });
+  login = async () => {
+    try {
+      this.setState({ loading: true });
+      const { email, password } = this.authStore;
+
+      const { data } = await AuthService.login(email, password);
+      await AsyncStorage.multiSet([
+        ['@CodeApi:token', data.token],
+        ['@CodeApi:user', JSON.stringify(data.user)],
+      ]);
+      this.setState({ loading: false });
+      this.authStore.setAuth(data.user, data.token);
+      this.props.navigation.navigate('Main');
+    } catch (err) {
+      if (err.status === 401) {
+        Alert.alert('Usuário ou senha inválidos');
+      }
+      this.setState({ loading: false });
+    }
   };
+
+  oneSignal() {
+    OneSignal.init('663fdab3-c2bc-4170-9669-7e25c87bdd0e', {
+      kOSSettingsKeyAutoPrompt: true,
+    });
+    OneSignal.addEventListener('ids', res => console.log('DSADASD', res));
+  }
 
   render() {
     return (
@@ -45,7 +70,6 @@ class Login extends Component {
         <KeyboardAvoidingView>
           <Input
             value={this.authStore.email}
-            error
             name="E-mail"
             onChange={value => this.authStore.onChangeInputs('email', value)}
           />

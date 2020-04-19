@@ -6,6 +6,7 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { AsyncStorage } from 'react-native';
 
 import Main from '~/pages/Main';
 import ItineraryRoutes from './Itinerary.routes';
@@ -18,7 +19,10 @@ function CustomDrawerContent(props) {
       <DrawerItemList {...props} />
       <DrawerItem
         label="Sair"
-        onPress={() => props.navigation.navigate('Login')}
+        onPress={async () => {
+          await AsyncStorage.clear();
+          props.navigation.navigate('Login');
+        }}
         icon={({ focused, color }) => (
           <Icon name={'ios-exit'} size={24} color={color} />
         )}
