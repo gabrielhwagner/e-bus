@@ -12,4 +12,11 @@ const Item = styled.View`
   margin-bottom: 15px;
 `;
 
-export { Container, Item };
+const Date = styled.Text`
+  color: #ffffff;
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+`;
+
+export { Container, Item, Date };

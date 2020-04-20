@@ -7,7 +7,7 @@ const getItinarios = () => [
     numeroPassageiros: 6,
     destinoFinal: 'Uniritter',
     descricao: 'Rota até a uniritter',
-    status: 'CONCLUIDA',
+    status: 'CONCLUIDO',
   },
   {
     id: 2,
@@ -16,7 +16,7 @@ const getItinarios = () => [
     numeroPassageiros: 8,
     destinoFinal: 'Garagem',
     descricao: 'Rota de retorno da uniritter',
-    status: 'PENDENTE',
+    status: 'NAO_INICIADO',
   },
   {
     id: 3,
@@ -25,7 +25,7 @@ const getItinarios = () => [
     numeroPassageiros: 15,
     destinoFinal: 'Uniritter',
     descricao: 'Rota de ida para a uniritter',
-    status: 'PENDENTE',
+    status: 'NAO_INICIADO',
   },
   {
     id: 4,
@@ -34,7 +34,7 @@ const getItinarios = () => [
     numeroPassageiros: 15,
     destinoFinal: 'Garagem',
     descricao: 'Rota de volta da uniritter',
-    status: 'PENDENTE',
+    status: 'NAO_INICIADO',
   },
 ];
 

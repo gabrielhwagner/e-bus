@@ -10,25 +10,28 @@ import {
   Passenger,
   Buttons,
   Button,
+  Content,
 } from './ItineraryCard.styles';
 
 export default function ItineraryCard(props) {
   return (
     <Container>
-      <View>
+      <Content isPassenger={props.isPassenger}>
         <Title>
           {props.itinerary.turno} - {props.itinerary.horarioInicio}
         </Title>
         <Description>{props.itinerary.descricao}</Description>
-        <Passenger>
-          <Description>
-            Passageiros: {props.itinerary.numeroPassageiros}
-          </Description>
-        </Passenger>
-      </View>
+        {props.itinerary.numeroPassageiros && (
+          <Passenger>
+            <Description>
+              Passageiros: {props.itinerary.numeroPassageiros}
+            </Description>
+          </Passenger>
+        )}
+      </Content>
       <Buttons
-        center={props.itinerary.status !== 'PENDENTE' || props.onLocation}>
-        {props.itinerary.status === 'PENDENTE' ? (
+        center={props.itinerary.status === 'CONCLUIDO' || props.isPassenger}>
+        {props.itinerary.status === 'NAO_INICIADO' && (
           <>
             {props.onPassenger && (
               <Button color={azul}>
@@ -50,18 +53,29 @@ export default function ItineraryCard(props) {
                 />
               </Button>
             )}
-            {props.onLocation && (
-              <Button color={azul}>
+            {props.isPassenger && (
+              <Button color="transparent">
                 <Icon
-                  onPress={props.onLocation}
-                  name={'location'}
-                  size={32}
-                  color={'#ffffff'}
+                  onPress={props.onPreview}
+                  name={'clock'}
+                  size={60}
+                  color={azul}
                 />
               </Button>
             )}
           </>
-        ) : (
+        )}
+        {props.itinerary.status === 'ATIVO' && props.onLocation && (
+          <Button color={azul}>
+            <Icon
+              onPress={props.onLocation}
+              name={'location'}
+              size={32}
+              color={'#ffffff'}
+            />
+          </Button>
+        )}
+        {props.itinerary.status === 'CONCLUIDO' && (
           <Button color={verdeDois}>
             <Icon name={'check'} size={32} color={'#ffffff'} />
           </Button>

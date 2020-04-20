@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { ScrollView } from 'react-native';
 import { observer, inject } from 'mobx-react';
 
+import { getDateNowBR } from '~/utils';
 import { Header, ItineraryCard } from '~/components';
-import { Container, Item } from './Itinerary.styles';
+import { Container, Item, Date } from './Itinerary.styles';
 import { getItinarios } from '~/mocks/Itinerarios';
 
 @inject('store')
@@ -27,6 +28,7 @@ class Itinerary extends Component {
     return (
       <Container>
         <Header title="Itinerario" />
+        <Date>{getDateNowBR()}</Date>
         <ScrollView>
           {itinerarys.map(itinerary => (
             <Item key={itinerary.id}>

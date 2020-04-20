@@ -18,17 +18,21 @@ const Container = styled.View`
   border-radius: 5;
 `;
 
+const Content = styled.View`
+  flex-direction: column;
+  justify-content: space-between;
+  height: ${({ isPassenger }) => (isPassenger ? 'auto' : '70px')};
+`;
+
 const Title = styled.Text`
   font-size: 16px;
   font-weight: bold;
   color: #ffffff;
-  margin-bottom: 10px;
 `;
 
 const Description = styled.Text`
   font-size: 14px;
   color: #ffffff;
-  margin-bottom: 10px;
 `;
 
 const Passenger = styled.Text`
@@ -52,4 +56,4 @@ const Button = styled.View`
   justify-content: center;
 `;
 
-export { Container, Title, Description, Buttons, Passenger, Button };
+export { Container, Title, Description, Buttons, Passenger, Button, Content };
