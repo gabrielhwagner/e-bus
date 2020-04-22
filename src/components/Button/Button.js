@@ -1,7 +1,6 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 
-import sdd from '~/assets/images/Rolling.gif';
 import { TextButton, ButtonStyle } from './Button.styles';
 
 export default function ButtonDefault(props) {
@@ -10,7 +9,7 @@ export default function ButtonDefault(props) {
       {!props.loading ? (
         <TextButton>{props.title}</TextButton>
       ) : (
-        <TextButton>...</TextButton>
+        <ActivityIndicator size="large" color="#ffffff" />
       )}
     </ButtonStyle>
   );

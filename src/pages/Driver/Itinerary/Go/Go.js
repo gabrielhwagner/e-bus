@@ -1,55 +1,43 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Alert } from 'react-native';
+import { View, StyleSheet, Text, Alert, ActivityIndicator } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import { observer, inject } from 'mobx-react';
 
-import DirectionsService from '~/services/DirectionsService';
+import ItineraryService from '~/services/ItineraryService';
 
+import { getDateTimeNow } from '~/utils';
 import { MapViewDiretions, Button } from '~/components';
-import { getDadosItinerario } from '~/mocks/Itinerarios';
 import { azul, dark } from '~/assets/css/Colors';
 import iconPassenger from '~/assets/images/marker.png';
 import iconCar from '~/assets/images/icon-car.png';
 
+@inject('store')
+@observer
 class Go extends Component {
   constructor(props) {
     super(props);
+    this.driverStore = props.store.DriverStore;
     this.state = {
       informations: null,
-      itinerary: null,
       userLocation: null,
-      isComplete: false,
+      getIsComplete: false,
+      loading: false,
     };
     this.mapView;
   }
 
   async componentDidMount() {
-    Geolocation.getCurrentPosition(
-      ({ coords: { longitude, latitude } }) => {
-        const userLocation = { latitude, longitude };
-        this.setState({ userLocation }, () => {
-          this.searchItinerary();
-        });
-      },
-      () => {
-        Alert.alert('Erro ao buscar a localização');
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 2000,
-        maximumAge: 3600000,
-      },
-    );
     Geolocation.watchPosition(
       ({ coords: { latitude, longitude } }) => {
         const userLocation = { latitude, longitude };
         this.setState({ userLocation }, () => {
-          this.searchItinerary();
+          if (!this.state.getIsComplete) {
+            this.startItinerary();
+          }
         });
       },
-      () => {
-        Alert.alert('Erro ao buscar a localização');
-      },
+      () => {},
       {
         maximumAge: 3600000,
         enableHighAccuracy: true,
@@ -58,40 +46,23 @@ class Go extends Component {
     );
   }
 
-  searchItinerary() {
-    if (this.state.isComplete) {
-      return;
-    }
-    const itinerary = getDadosItinerario();
-    const finalLocation = itinerary.locais.pop();
-
-    DirectionsService.searchOrderWaypoints(
-      this.state.userLocation,
-      finalLocation.coordinates,
-      itinerary.locais,
-    )
-      .then(({ data }) => {
-        this.setOrderWaypoints(
-          itinerary,
-          data.routes[0].waypoint_order,
-          finalLocation,
-        );
-      })
-      .catch(() => Alert.alert('Erro ao iniciar'));
+  componentWillUnmount() {
+    Geolocation.stopObserving();
   }
 
-  setOrderWaypoints(itinerary, order, finalLocation) {
-    const itineraryOrder = order.map((point, index) => {
-      return {
-        ...itinerary.locais[point],
-        active: index === 0,
-      };
-    });
-    itineraryOrder.push({ ...finalLocation, active: false });
-    console.log(itineraryOrder);
-    this.setState({ itinerary: itineraryOrder }, () =>
-      this.setState({ isComplete: true }),
-    );
+  async startItinerary() {
+    try {
+      this.setState({ loading: true });
+      await this.driverStore.startItinerary();
+      await this.driverStore.orderPoints(this.state.userLocation);
+      this.setState({ getIsComplete: true, loading: false });
+    } catch (err) {
+      this.setState({
+        getIsComplete: true,
+        loading: false,
+      });
+      Alert.alert(err);
+    }
   }
 
   onReady = result => {
@@ -115,25 +86,35 @@ class Go extends Component {
       zoom: 18,
     };
     this.mapView.setCamera(camera);
+    this.saveLocationDriver();
   }
 
-  get itineraryActive() {
-    return this.state.itinerary.find(point => point.active);
-  }
-
-  changeItinerary() {
-    const pointActiveIndex = this.state.itinerary.findIndex(
-      point => point.active,
+  saveLocationDriver() {
+    ItineraryService.saveLocationDriver(
+      this.state.userLocation,
+      getDateTimeNow(),
+      this.driverStore.itineraryStart.id,
     );
-
-    if (pointActiveIndex === this.state.itinerary.length - 1) {
-      return this.displayAlert();
-    }
-    this.state.itinerary[pointActiveIndex].active = false;
-    this.state.itinerary[pointActiveIndex + 1].active = true;
-
-    this.setState({ itinerary: this.state.itinerary });
   }
+
+  //
+  sendNotification() {}
+
+  sendStatusPassenger = async status => {
+    this.setState({ loading: true });
+    await this.driverStore.saveStorePassenger(status);
+    this.setState({ loading: false });
+  };
+
+  finishItinerary = async () => {
+    this.setState({ loading: true });
+    await ItineraryService.finishItinerary(
+      this.driverStore.itinerarySelected.id,
+      getDateTimeNow(),
+    );
+    this.setState({ loading: false });
+    this.props.navigation.navigate('Itinerary');
+  };
 
   displayAlert() {
     Alert.alert(
@@ -154,10 +135,6 @@ class Go extends Component {
     );
   }
 
-  onStart = () => {
-    console.log('ONSTART');
-  };
-
   render() {
     return (
       <View style={styles.container}>
@@ -167,19 +144,26 @@ class Go extends Component {
           loadingEnabled
           followUserLocation={true}
           showsUserLocation>
-          {this.state.isComplete && (
+          {this.state.getIsComplete && (
             <>
               <MapViewDiretions
                 origin={this.state.userLocation}
-                destination={this.itineraryActive}
+                destination={this.driverStore.passengerActive}
                 optimizeWaypoints={false}
-                onStart={this.onStart}
+                onStart={() => {}}
                 onReady={this.onReady}
               />
               <Marker
-                coordinate={this.itineraryActive.coordinates}
-                title={this.itineraryActive.nome}
-                description={this.itineraryActive.tipo}
+                coordinate={{
+                  latitude: Number(
+                    this.driverStore.passengerActive.endereco.latitude,
+                  ),
+                  longitude: Number(
+                    this.driverStore.passengerActive.endereco.longitude,
+                  ),
+                }}
+                title={this.driverStore.passengerActive.nome}
+                description={this.driverStore.passengerActive.tipo}
                 icon={iconPassenger}
               />
             </>
@@ -193,7 +177,7 @@ class Go extends Component {
                 Nome:
                 <Text style={styles.response}>
                   {' '}
-                  {this.itineraryActive.nome}
+                  {this.driverStore.passengerActive.nome}
                 </Text>
               </Text>
               <Text style={styles.title}>
@@ -211,17 +195,31 @@ class Go extends Component {
                 </Text>
               </Text>
             </View>
-            {/* <Button
-              style={styles.button}
-              onPress={() => this.changeItinerary()}
-              title="Não embarcou"
-            /> */}
-
-            <Button
-              style={styles.button}
-              onPress={() => this.changeItinerary()}
-              title="Embarcou"
-            />
+            {this.driverStore.isLastPoint ? (
+              <Button
+                style={styles.button}
+                onPress={() => this.finishItinerary()}
+                title="Finalizar"
+              />
+            ) : (
+              <>
+                <Button
+                  style={styles.button}
+                  onPress={() => this.sendStatusPassenger('NAO_EMBARCOU')}
+                  title="Não embarcou"
+                />
+                <Button
+                  style={styles.button}
+                  onPress={() => this.sendStatusPassenger('EMBARCOU')}
+                  title="Embarcou"
+                />
+              </>
+            )}
+            {this.state.loading && (
+              <View style={styles.loading}>
+                <ActivityIndicator size="large" color="#ffffff" />
+              </View>
+            )}
           </View>
         )}
       </View>
@@ -233,6 +231,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
+    position: 'relative',
   },
   mapView: {
     position: 'absolute',
@@ -271,6 +270,16 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
+  },
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    top: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
 });
 

@@ -13,10 +13,18 @@ const Item = styled.View`
 `;
 
 const Date = styled.Text`
+  font-size: 20px;
+  font-weight: bold;
   color: #ffffff;
-  text-align: center;
-  font-size: 18px;
+  padding: 0 20px;
   margin-bottom: 20px;
+  text-align: center;
 `;
 
-export { Container, Item, Date };
+const EmptyMessage = styled.Text`
+  color: #ffffff;
+  text-align: center;
+  font-size: 16px;
+`;
+
+export { Container, Item, Date, EmptyMessage };

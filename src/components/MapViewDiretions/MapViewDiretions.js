@@ -5,8 +5,11 @@ import { GOOGLE_KEY } from '~/utils';
 export default function MapViewDiretions(props) {
   let waypoints;
   if (props.waypoints) {
-    waypoints = props.waypoints.map(local => {
-      return local.coordinates;
+    waypoints = props.waypoints.map(({ endereco: { latitude, longitude } }) => {
+      return {
+        latitude: Number(latitude),
+        longitude: Number(longitude),
+      };
     });
   } else {
     waypoints = [];
@@ -15,7 +18,10 @@ export default function MapViewDiretions(props) {
     <MapViewDirections
       origin={props.origin}
       waypoints={waypoints}
-      destination={props.destination.coordinates}
+      destination={{
+        latitude: Number(props.destination.endereco.latitude),
+        longitude: Number(props.destination.endereco.longitude),
+      }}
       apikey={GOOGLE_KEY}
       strokeWidth={3}
       strokeColor={'#222'}

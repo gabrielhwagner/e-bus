@@ -32,7 +32,6 @@ function CustomDrawerContent(props) {
 }
 
 export default function() {
-  console.log('MAIS');
   return (
     <Drawer.Navigator
       initialRouteName="Home"

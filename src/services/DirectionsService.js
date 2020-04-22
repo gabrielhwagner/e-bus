@@ -22,8 +22,8 @@ function converterURL(data) {
 
 function converterWaypoints(waypoints) {
   let string = 'optimize:true|';
-  waypoints.forEach(({ coordinates }, index) => {
-    string += `${coordinates.latitude},${coordinates.longitude}`;
+  waypoints.forEach(({ latitude, longitude }, index) => {
+    string += `${latitude},${longitude}`;
     if (index !== waypoints.length - 1) {
       string += '|';
     }

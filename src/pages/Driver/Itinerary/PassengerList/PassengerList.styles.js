@@ -21,4 +21,10 @@ const Title = styled.Text`
   text-align: center;
 `;
 
-export { Container, Title, Item };
+const EmptyMessage = styled.Text`
+  color: #ffffff;
+  text-align: center;
+  font-size: 16px;
+`;
+
+export { Container, Title, Item, EmptyMessage };

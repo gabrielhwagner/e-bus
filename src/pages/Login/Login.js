@@ -5,7 +5,6 @@ import {
   Alert,
   AsyncStorage,
 } from 'react-native';
-
 import { observer, inject } from 'mobx-react';
 import OneSignal from 'react-native-onesignal'; // Import package from node modules
 
@@ -30,7 +29,6 @@ class Login extends Component {
     const token = await AsyncStorage.getItem('@CodeApi:token');
     const user = await AsyncStorage.getItem('@CodeApi:user');
     if (token && user) {
-      console.log('LOGADO');
       this.authStore.setAuth(JSON.parse(user), token);
       this.props.navigation.navigate('Main');
     }
@@ -38,7 +36,6 @@ class Login extends Component {
 
   login = async () => {
     try {
-      console.log('LOGIN');
       this.setState({ loading: true });
       const { email, password } = this.authStore;
 
@@ -47,6 +44,7 @@ class Login extends Component {
         ['@CodeApi:token', data.token],
         ['@CodeApi:user', JSON.stringify(data.user)],
       ]);
+      this.setOneSignal();
       this.setState({ loading: false });
       this.authStore.setAuth(data.user, data.token);
       this.props.navigation.navigate('Main');
@@ -58,11 +56,11 @@ class Login extends Component {
     }
   };
 
-  oneSignal() {
-    OneSignal.init('663fdab3-c2bc-4170-9669-7e25c87bdd0e', {
-      kOSSettingsKeyAutoPrompt: true,
+  setOneSignal() {
+    OneSignal.init('663fdab3-c2bc-4170-9669-7e25c87bdd0e');
+    OneSignal.addEventListener('ids', ({ userId }) => {
+      AuthService.setPlayerId(userId);
     });
-    OneSignal.addEventListener('ids', res => console.log('DSADASD', res));
   }
 
   render() {

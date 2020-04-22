@@ -16,7 +16,6 @@ export class AuthStore {
   setAuth(user, token) {
     this.token = token;
     this.user = user;
-    console.log(token, user);
   }
 
   get isPassenger() {

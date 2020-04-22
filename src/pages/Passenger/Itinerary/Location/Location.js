@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { observer, inject } from 'mobx-react';
 
+import { getDateNow } from '~/utils';
 import ItineraryService from '~/services/ItineraryService';
 import iconPassenger from '~/assets/images/marker.png';
 import iconCar from '~/assets/images/icon-car.png';
 
+@inject('store')
+@observer
 class Location extends Component {
   constructor(props) {
     super(props);
     this.itineraryService = ItineraryService;
+    this.passengerStore = props.store.PassengerStore;
     this.state = {
       driverLocation: null,
     };
@@ -25,8 +30,11 @@ class Location extends Component {
   }
 
   searchLocationDriver() {
+    const dateNow = getDateNow();
+    const { id } = this.passengerStore.itinerarySelected;
+
     this.itineraryService
-      .searchLocationDriver(1, '2020-04-14')
+      .searchLocationDriver(id, dateNow)
       .then(({ data }) => {
         const driverLocation = {
           latitude: Number(data.latitude),

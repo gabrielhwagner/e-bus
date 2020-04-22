@@ -14,11 +14,9 @@ class Routes extends Component {
   constructor(props) {
     super();
     this.authStore = props.store.AuthStore;
-    console.log('constr', this.authStore.isPassenger);
   }
 
   render() {
-    console.log('render', this.authStore.isPassenger);
     return (
       <Stack.Navigator initialRouteName="Login">
         {this.authStore.isPassenger ? (

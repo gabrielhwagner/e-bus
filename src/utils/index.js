@@ -12,6 +12,10 @@ function getDateNow() {
   return dayjs().format('YYYY-MM-DD');
 }
 
+function getDateTimeNow() {
+  return dayjs().format('YYYY-MM-DD HH:mm:ss');
+}
+
 function getDateNowBR() {
   return dayjs().format('DD/MM/YYYY');
 }
@@ -19,4 +23,11 @@ function getDateNowBR() {
 const GOOGLE_KEY = 'AIzaSyAdKYWYO_o_v7ov3qYQu5l_5Qcm3-WJ3T4';
 const URL_API = 'https://ebus-backend.herokuapp.com';
 
-export { getPixelSize, GOOGLE_KEY, URL_API, getDateNow, getDateNowBR };
+export {
+  getPixelSize,
+  GOOGLE_KEY,
+  URL_API,
+  getDateNow,
+  getDateNowBR,
+  getDateTimeNow,
+};

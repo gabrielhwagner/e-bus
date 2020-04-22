@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Text, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import { observer, inject } from 'mobx-react';
 
 import { MapViewDiretions, Button } from '~/components';
 import { getPixelSize } from '~/utils';
@@ -10,43 +11,27 @@ import { azul, dark } from '~/assets/css/Colors';
 import iconPassenger from '~/assets/images/marker.png';
 import iconUm from '~/assets/images/icon-college.png';
 
+@inject('store')
+@observer
 class Preview extends Component {
   constructor(props) {
     super(props);
+    this.driverStore = props.store.DriverStore;
     this.state = {
-      description: null,
-      itinerary: null,
-      finalLocation: null,
       userLocation: null,
-      waypoints: null,
-      isComplete: false,
+      getIsComplete: false,
+      itinerary: null,
     };
     this.mapView;
   }
 
   async componentDidMount() {
-    Geolocation.getCurrentPosition(
-      ({ coords: { longitude, latitude } }) => {
-        const userLocation = { latitude, longitude };
-        this.setLocations(userLocation);
-      },
-      () => {
-        Alert.alert('Erro ao buscar a localização');
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 2000,
-        maximumAge: 3600000,
-      },
-    );
     Geolocation.watchPosition(
       ({ coords: { latitude, longitude } }) => {
         const userLocation = { latitude, longitude };
         this.setLocations(userLocation);
       },
-      () => {
-        Alert.alert('Erro ao buscar a localização');
-      },
+      () => {},
       {
         maximumAge: 3600000,
         enableHighAccuracy: true,
@@ -55,24 +40,26 @@ class Preview extends Component {
     );
   }
 
-  setLocations(userLocation) {
-    const itinerary = getDadosItinerario();
-    this.setState({
-      description: itinerary.descricao,
-    });
-    const finalLocation = itinerary.locais.pop();
-    this.setState(
-      {
-        userLocation,
-        waypoints: itinerary.locais,
-        finalLocation,
-      },
-      () => {
-        this.setState({
-          isComplete: true,
-        });
-      },
-    );
+  searchItineraryPoints = async () => {
+    try {
+      await this.driverStore.searchItineraryPointsService();
+      this.setState({ getIsComplete: true });
+    } catch (err) {
+      this.setState({
+        getIsComplete: true,
+      });
+    }
+  };
+
+  async setLocations(userLocation) {
+    this.setState({ userLocation });
+    if (!this.state.getIsComplete) {
+      this.searchItineraryPoints();
+    }
+  }
+
+  componentWillUnmount() {
+    Geolocation.stopObserving();
   }
 
   onReady = result => {
@@ -116,6 +103,7 @@ class Preview extends Component {
   }
 
   render() {
+    const { itinerarySelected } = this.driverStore;
     return (
       <View style={styles.container}>
         <MapView
@@ -123,22 +111,22 @@ class Preview extends Component {
           style={styles.mapView}
           loadingEnabled
           showsUserLocation>
-          {this.state.isComplete && (
+          {this.state.getIsComplete && (
             <>
               <MapViewDiretions
                 origin={this.state.userLocation}
-                waypoints={this.state.waypoints}
-                destination={this.state.finalLocation}
-                optimizeWaypoints={true}
+                waypoints={itinerarySelected.points}
+                destination={itinerarySelected.finalPoint}
+                optimizeWaypoints={false}
                 onStart={() => {}}
                 onReady={this.onReady}
               />
-              {this.state.waypoints.map(({ nome, tipo, coordinates }) => (
+              {itinerarySelected.points.map(({ id, nome, tipo, endereco }) => (
                 <Marker
-                  key={coordinates.latitude}
+                  key={id}
                   coordinate={{
-                    latitude: coordinates.latitude,
-                    longitude: coordinates.longitude,
+                    latitude: Number(endereco.latitude),
+                    longitude: Number(endereco.longitude),
                   }}
                   image={iconPassenger}
                   title={nome}
@@ -147,12 +135,16 @@ class Preview extends Component {
               ))}
               <Marker
                 coordinate={{
-                  latitude: this.state.finalLocation.coordinates.latitude,
-                  longitude: this.state.finalLocation.coordinates.longitude,
+                  latitude: Number(
+                    itinerarySelected.finalPoint.endereco.latitude,
+                  ),
+                  longitude: Number(
+                    itinerarySelected.finalPoint.endereco.longitude,
+                  ),
                 }}
                 image={iconUm}
-                title={this.state.finalLocation.nome}
-                description={this.state.finalLocation.tipo}
+                title={itinerarySelected.finalPoint.nome}
+                description={itinerarySelected.finalPoint.tipo}
               />
             </>
           )}
@@ -162,7 +154,10 @@ class Preview extends Component {
             <View>
               <Text style={styles.title}>
                 Nome:
-                <Text style={styles.response}> {this.state.description}</Text>
+                <Text style={styles.response}>
+                  {' '}
+                  {itinerarySelected.descricao}
+                </Text>
               </Text>
               <Text style={styles.title}>
                 Tempo médio:
