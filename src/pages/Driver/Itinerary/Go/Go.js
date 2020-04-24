@@ -68,7 +68,12 @@ class Go extends Component {
   onReady = result => {
     const distance = result.distance;
     const duration = result.duration / 60;
-
+    if (
+      duration <= 0.12 &&
+      !this.driverStore.passengerActive.notificationSend
+    ) {
+      this.sendNotification();
+    }
     this.setState({
       informations: {
         distance: distance.toFixed(2),
@@ -98,7 +103,12 @@ class Go extends Component {
   }
 
   //
-  sendNotification() {}
+  sendNotification() {
+    console.log('notificacao');
+    const title = `Olá ${this.driverStore.passengerActive.nome}!`;
+    const description = 'O motorista está a 5 minutos do seu endereço!';
+    this.driverStore.sendNotification(title, description);
+  }
 
   sendStatusPassenger = async status => {
     this.setState({ loading: true });

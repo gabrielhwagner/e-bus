@@ -1,6 +1,7 @@
 import { observable, action, computed } from 'mobx';
 
 import DirectionsService from '~/services/DirectionsService';
+import AuthService from '~/services/AuthService';
 import ItineraryService from '~/services/ItineraryService';
 import { getDateNow, getDateTimeNow } from '~/utils';
 
@@ -15,8 +16,8 @@ export class DriverStore {
   async searchItineraryService() {
     try {
       const date = getDateNow();
+      console.log('chamou');
       const { data } = await ItineraryService.searchItineraryDriver(date);
-      this.itineraries = [];
       this.itineraries = data;
       return;
     } catch (err) {}
@@ -31,6 +32,7 @@ export class DriverStore {
         id,
         date,
       );
+      this.itinerarySelected.passengers = [];
       this.itinerarySelected.passengers = data;
       return;
     } catch (err) {}
@@ -41,13 +43,12 @@ export class DriverStore {
     try {
       const date = getDateNow();
       const { id } = this.itinerarySelected;
-      const { data } = await ItineraryService.removePassengerItinerary(
+      await ItineraryService.removePassengerItinerary(
         id,
         idPassenger,
         author,
         date,
       );
-      this.itinerarySelected.passengers = data;
       return;
     } catch (err) {}
   }
@@ -114,6 +115,7 @@ export class DriverStore {
       return {
         ...itinerary[point],
         active: index === 0,
+        notificationSend: false,
       };
     });
     itineraryOrder.push({ ...finalLocation, active: false });
@@ -123,6 +125,10 @@ export class DriverStore {
 
   get passengerActive() {
     return this.itineraryStart.points.find(point => point.active);
+  }
+
+  get indexPassengerActive() {
+    return this.itineraryStart.points.findIndex(point => point.active);
   }
 
   get isLastPoint() {
@@ -140,9 +146,7 @@ export class DriverStore {
       status,
       getDateTimeNow(),
     );
-    const pointActiveIndex = this.itineraryStart.points.findIndex(
-      point => point.active,
-    );
+    const pointActiveIndex = this.indexPassengerActive;
 
     if (pointActiveIndex === this.itineraryStart.points.length - 1) {
       return;
@@ -153,5 +157,21 @@ export class DriverStore {
     itineraryStart.points[pointActiveIndex].active = false;
 
     this.itineraryStart = itineraryStart;
+  }
+
+  @action
+  async sendNotification(title, description) {
+    // chamar o service
+    await AuthService.sendNotification(
+      title,
+      description,
+      this.passengerActive.id,
+    );
+
+    this.itineraryStart.points[
+      this.indexPassengerActive
+    ].notificationSend = true;
+
+    // atualiza o passageiro
   }
 }

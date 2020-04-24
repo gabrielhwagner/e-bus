@@ -59,7 +59,7 @@ class Preview extends Component {
   }
 
   componentWillUnmount() {
-    Geolocation.stopObserving();
+    // Geolocation.stopObserving();
   }
 
   onReady = result => {

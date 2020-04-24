@@ -61,7 +61,7 @@ class Itinerary extends Component {
             <EmptyMessage>Você não possui itinerário hoje</EmptyMessage>
           }
           renderItem={({ item }) => (
-            <Item>
+            <Item key={item.id}>
               <ItineraryCard
                 onPreview={() => this.onPreview(item.id)}
                 onPassenger={() => this.onPassenger(item.id)}

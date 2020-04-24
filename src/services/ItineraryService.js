@@ -61,7 +61,7 @@ class ItineraryService {
   }
 
   searchLocationDriver(itinerary, day) {
-    const url = `${URL_API}/itinerary/1/location?day=2020-04-14`;
+    const url = `${URL_API}/itinerary/${itinerary}/location?day=${day}`;
     return axios.get(url);
   }
 }
