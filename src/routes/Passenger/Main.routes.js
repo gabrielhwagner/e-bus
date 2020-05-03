@@ -9,7 +9,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { AsyncStorage } from 'react-native';
 
 import { verde } from '~/assets/css/Colors';
-import Main from '~/pages/Main';
+import Main from '~/pages/Passenger/Main';
+import Absence from '~/pages/Passenger/Absence/Absence';
 import ItineraryRoutes from './Itinerary.routes';
 
 const Drawer = createDrawerNavigator();
@@ -48,6 +49,16 @@ export default function() {
         name="Home"
         component={Main}
         options={{
+          drawerIcon: ({ focused, color }) => (
+            <Icon name={'home'} size={27} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Absence"
+        component={Absence}
+        options={{
+          drawerLabel: 'Ausência',
           drawerIcon: ({ focused, color }) => (
             <Icon name={'home'} size={27} color={color} />
           ),

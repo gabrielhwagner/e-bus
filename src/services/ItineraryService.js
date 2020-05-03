@@ -3,7 +3,7 @@ import { URL_API } from '~/utils';
 
 class ItineraryService {
   searchItineraryPassenger(day) {
-    const url = `${URL_API}/passenger/itinerary?day=2020-05-04`;
+    const url = `${URL_API}/passenger/itinerary?day=${day}`;
     return axios.get(url);
   }
 
@@ -19,6 +19,15 @@ class ItineraryService {
 
   removePassengerItinerary(id, idPassenger, author, data) {
     const url = `${URL_API}/itinerary/${id}/passenger/${idPassenger}/remove`;
+    const body = {
+      data,
+      author,
+    };
+    return axios.post(url, body);
+  }
+
+  removePassengerItineraryOfPassenger(id, author, data) {
+    const url = `${URL_API}/passenger/itinerary/${id}/remove`;
     const body = {
       data,
       author,

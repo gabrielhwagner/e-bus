@@ -8,16 +8,16 @@ function getPixelSize(pixels) {
   });
 }
 
-function getDateNow() {
-  return dayjs().format('YYYY-MM-DD');
+function getDateNow(timestamp = undefined) {
+  return dayjs(timestamp).format('YYYY-MM-DD');
 }
 
 function getDateTimeNow() {
   return dayjs().format('YYYY-MM-DD HH:mm:ss');
 }
 
-function getDateNowBR() {
-  return dayjs().format('DD/MM/YYYY');
+function getDateNowBR(timestamp = undefined) {
+  return dayjs(timestamp).format('DD/MM/YYYY');
 }
 
 const GOOGLE_KEY = 'AIzaSyAdKYWYO_o_v7ov3qYQu5l_5Qcm3-WJ3T4';

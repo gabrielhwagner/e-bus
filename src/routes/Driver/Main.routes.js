@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { AsyncStorage } from 'react-native';
 
 import { verde } from '~/assets/css/Colors';
-import Main from '~/pages/Main';
+import Main from '~/pages/Driver/Main';
 import ItineraryRoutes from './Itinerary.routes';
 
 const Drawer = createDrawerNavigator();

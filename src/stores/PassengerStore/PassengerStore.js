@@ -8,9 +8,8 @@ export class PassengerStore {
   @observable itinerarySelected;
 
   @action
-  async searchItineraryService() {
+  async searchItineraryService(date = getDateNow()) {
     try {
-      const date = getDateNow();
       const { data } = await ItineraryService.searchItineraryPassenger(date);
       this.itineraries = [];
       this.itineraries = data;
@@ -21,5 +20,17 @@ export class PassengerStore {
   @action
   setItinerarySelected(id) {
     this.itinerarySelected = this.itineraries.find(iti => (iti.id = id));
+  }
+
+  @action
+  async removePassengerService(idItinerary, date, author) {
+    try {
+      await ItineraryService.removePassengerItineraryOfPassenger(
+        idItinerary,
+        author,
+        date,
+      );
+      return;
+    } catch (err) {}
   }
 }

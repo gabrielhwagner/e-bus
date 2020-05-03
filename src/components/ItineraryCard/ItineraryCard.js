@@ -53,13 +53,23 @@ export default function ItineraryCard(props) {
                 />
               </Button>
             )}
-            {props.isPassenger && (
+            {props.isPassenger && !props.onRemovePassenger && (
               <Button color="transparent">
                 <Icon
                   onPress={props.onPreview}
                   name={'clock'}
                   size={60}
                   color={azul}
+                />
+              </Button>
+            )}
+            {props.onRemovePassenger && (
+              <Button color={azul}>
+                <Icon
+                  onPress={props.onRemovePassenger}
+                  name={'remove-user'}
+                  size={32}
+                  color={'#ffffff'}
                 />
               </Button>
             )}
