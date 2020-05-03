@@ -12,7 +12,7 @@ import AuthService from '~/services/AuthService';
 import ButtonDefault from '~/components/Button/Button';
 import Input from '~/components/Input/Input';
 import { dark } from '~/assets/css/Colors';
-import { Container } from './Login.styles';
+import { Container, Content } from './Login.styles';
 
 @inject('store')
 @observer
@@ -68,21 +68,25 @@ class Login extends Component {
       <Container>
         <StatusBar barStyle="light-content" backgroundColor={dark} />
         <KeyboardAvoidingView>
-          <Input
-            value={this.authStore.email}
-            name="E-mail"
-            onChange={value => this.authStore.onChangeInputs('email', value)}
-          />
-          <Input
-            value={this.authStore.password}
-            name="Senha"
-            onChange={value => this.authStore.onChangeInputs('password', value)}
-          />
-          <ButtonDefault
-            onPress={() => this.login()}
-            title="Entrar"
-            loading={this.state.loading}
-          />
+          <Content>
+            <Input
+              value={this.authStore.email}
+              name="E-mail"
+              onChange={value => this.authStore.onChangeInputs('email', value)}
+            />
+            <Input
+              value={this.authStore.password}
+              name="Senha"
+              onChange={value =>
+                this.authStore.onChangeInputs('password', value)
+              }
+            />
+            <ButtonDefault
+              onPress={() => this.login()}
+              title="Entrar"
+              loading={this.state.loading}
+            />
+          </Content>
         </KeyboardAvoidingView>
       </Container>
     );

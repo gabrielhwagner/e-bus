@@ -1,10 +1,17 @@
 import styled from 'styled-components/native';
+import { Dimensions } from 'react-native';
 
-import { dark } from '~/assets/css/Colors';
+import { background, azul } from '~/assets/css/Colors';
 
 const Container = styled.View`
   flex: 1;
-  background-color: ${dark};
+  background-color: ${background};
+`;
+
+const Background = styled.ImageBackground`
+  width: 100%;
+  height: 300;
+  position: absolute;
 `;
 
 const Item = styled.View`
@@ -22,9 +29,14 @@ const Date = styled.Text`
 `;
 
 const EmptyMessage = styled.Text`
-  color: #ffffff;
+  width: ${Dimensions.get('window').width - 40};
+  color: ${azul};
+  margin: auto;
   text-align: center;
+  padding: 20px;
   font-size: 16px;
+  background-color: #fff;
+  border-radius: 5;
 `;
 
-export { Container, Item, Date, EmptyMessage };
+export { Container, Item, Date, EmptyMessage, Background };

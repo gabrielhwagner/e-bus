@@ -5,9 +5,10 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { AsyncStorage } from 'react-native';
 
+import { verde } from '~/assets/css/Colors';
 import Main from '~/pages/Main';
 import ItineraryRoutes from './Itinerary.routes';
 
@@ -24,7 +25,7 @@ function CustomDrawerContent(props) {
           props.navigation.navigate('Login');
         }}
         icon={({ focused, color }) => (
-          <Icon name={'ios-exit'} size={24} color={color} />
+          <Icon name={'sign-out'} size={29} color={color} />
         )}
       />
     </DrawerContentScrollView>
@@ -34,7 +35,13 @@ function CustomDrawerContent(props) {
 export default function() {
   return (
     <Drawer.Navigator
+      drawerStyle={{
+        backgroundColor: verde,
+      }}
       initialRouteName="Home"
+      drawerContentOptions={{
+        activeTintColor: '#fff',
+      }}
       drawerContent={CustomDrawerContent}
       drawerType="back">
       <Drawer.Screen
@@ -42,7 +49,7 @@ export default function() {
         component={Main}
         options={{
           drawerIcon: ({ focused, color }) => (
-            <Icon name={'ios-home'} size={24} color={color} />
+            <Icon name={'home'} size={27} color={color} />
           ),
         }}
       />
@@ -52,7 +59,7 @@ export default function() {
         options={{
           drawerLabel: 'Itinerário',
           drawerIcon: ({ focused, color }) => (
-            <Icon name={'ios-map'} size={24} color={color} />
+            <Icon name={'road'} size={26} color={color} />
           ),
         }}
       />

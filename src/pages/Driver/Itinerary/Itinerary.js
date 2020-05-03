@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, FlatList } from 'react-native';
+import { StyleSheet, FlatList, View } from 'react-native';
 import { observer, inject } from 'mobx-react';
 
 import { getDateNowBR } from '~/utils';
 import { Header, ItineraryCard } from '~/components';
-import { Container, Item, Date, EmptyMessage } from './Itinerary.styles';
+import {
+  Container,
+  Item,
+  Date,
+  EmptyMessage,
+  Background,
+} from './Itinerary.styles';
+import background from '~/assets/images/menor.png';
 
 @inject('store')
 @observer
@@ -50,6 +57,7 @@ class Itinerary extends Component {
   render() {
     return (
       <Container>
+        <Background resizeMode={'cover'} source={background} />
         <Header title="Itinerário" />
         <Date>{getDateNowBR()}</Date>
         <FlatList
@@ -62,11 +70,13 @@ class Itinerary extends Component {
           }
           renderItem={({ item }) => (
             <Item key={item.id}>
-              <ItineraryCard
-                onPreview={() => this.onPreview(item.id)}
-                onPassenger={() => this.onPassenger(item.id)}
-                itinerary={item}
-              />
+              <View style={styles.description}>
+                <ItineraryCard
+                  onPreview={() => this.onPreview(item.id)}
+                  onPassenger={() => this.onPassenger(item.id)}
+                  itinerary={item}
+                />
+              </View>
             </Item>
           )}
         />
@@ -74,5 +84,20 @@ class Itinerary extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  description: {
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: 3.84,
+    elevation: 6,
+  },
+});
 
 export default Itinerary;

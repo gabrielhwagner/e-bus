@@ -1,15 +1,21 @@
 import styled from 'styled-components/native';
 
-import { dark } from '~/assets/css/Colors';
+import { background } from '~/assets/css/Colors';
 
 const Container = styled.View`
   flex: 1;
-  background-color: ${dark};
+  background-color: ${background};
 `;
 
 const Item = styled.View`
   padding: 0 18px;
   margin-bottom: 15px;
+`;
+
+const Background = styled.ImageBackground`
+  width: 100%;
+  height: 300;
+  position: absolute;
 `;
 
 const Title = styled.Text`
@@ -27,4 +33,4 @@ const EmptyMessage = styled.Text`
   font-size: 16px;
 `;
 
-export { Container, Title, Item, EmptyMessage };
+export { Container, Title, Item, EmptyMessage, Background };

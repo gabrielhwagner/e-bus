@@ -10,7 +10,7 @@ const verdeDois = '#41CECD';
 const azul = '#2E7BF6';
 const azulDois = '#36A0E5';
 
-const background = '#F7F8FD';
+const background = '#f1eff2';
 
 const dark = '#130c20';
 const darkDois = '#221539';

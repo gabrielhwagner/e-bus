@@ -3,17 +3,17 @@ import { URL_API } from '~/utils';
 
 class ItineraryService {
   searchItineraryPassenger(day) {
-    const url = `${URL_API}/passenger/itinerary?day=${day}`;
+    const url = `${URL_API}/passenger/itinerary?day=2020-05-04`;
     return axios.get(url);
   }
 
   searchItineraryDriver(day) {
-    const url = `${URL_API}/itinerary?day=${day}`;
+    const url = `${URL_API}/itinerary?day=2020-05-04`;
     return axios.get(url);
   }
 
   searchPassengerItinerary(id, day) {
-    const url = `${URL_API}/itinerary/${id}/passenger?day=${day}`;
+    const url = `${URL_API}/itinerary/${id}/passenger?day=2020-05-04`;
     return axios.get(url);
   }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
 import { verde } from '~/assets/css/Colors';
@@ -11,12 +11,12 @@ export default function Header({ title }) {
     <Container>
       <Icon
         onPress={() => navigation.toggleDrawer()}
-        name={'ios-menu'}
-        size={22}
-        color={verde}
+        name={'bars'}
+        size={30}
+        color={'#fff'}
       />
       <Title>{title}</Title>
-      <Icon name={'ios-notifications-outline'} size={22} color={verde} />
+      <Icon name={'bell-o'} size={28} color={'#fff'} />
     </Container>
   );
 }

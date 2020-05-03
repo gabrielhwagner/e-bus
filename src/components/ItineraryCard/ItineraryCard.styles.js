@@ -12,7 +12,7 @@ import {
 const Container = styled.View`
   width: 100%;
   padding: 20px;
-  background-color: ${darkDois};
+  background-color: #fff;
   flex-direction: row;
   justify-content: space-between;
   border-radius: 5;
@@ -27,17 +27,17 @@ const Content = styled.View`
 const Title = styled.Text`
   font-size: 16px;
   font-weight: bold;
-  color: #ffffff;
+  color: ${azulDois};
 `;
 
 const Description = styled.Text`
   font-size: 14px;
-  color: #ffffff;
+  color: ${azulDois};
 `;
 
 const Passenger = styled.Text`
   font-size: 14px;
-  color: #ffffff;
+  color: ${azulDois};
 `;
 
 const Buttons = styled.View`

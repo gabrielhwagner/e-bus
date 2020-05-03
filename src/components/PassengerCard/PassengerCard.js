@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
-import { red } from '~/assets/css/Colors';
+import { azul } from '~/assets/css/Colors';
 
 import {
   Container,
@@ -45,7 +45,7 @@ export default function PassengerCard(props) {
         </Description>
       </Informations>
       <Buttons>
-        <Button color={red}>
+        <Button color={azul}>
           <Icon
             onPress={props.onRemove}
             name={'remove-user'}

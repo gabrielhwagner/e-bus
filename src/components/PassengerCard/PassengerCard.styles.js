@@ -1,18 +1,11 @@
 import styled from 'styled-components/native';
 
-import {
-  darkDois,
-  azul,
-  verde,
-  azulDois,
-  verdeDois,
-  wh,
-} from '~/assets/css/Colors';
+import { azulDois } from '~/assets/css/Colors';
 
 const Container = styled.View`
   width: 100%;
   padding: 20px;
-  background-color: ${darkDois};
+  background-color: #fff;
   flex-direction: row;
   justify-content: space-between;
   border-radius: 5;
@@ -21,21 +14,21 @@ const Container = styled.View`
 const Title = styled.Text`
   font-size: 16px;
   font-weight: bold;
-  color: #ffffff;
+  color: ${azulDois};
   margin-bottom: 10px;
   text-transform: uppercase;
 `;
 
 const Description = styled.Text`
   font-size: 14px;
-  color: #ffffff;
+  color: ${azulDois};
   margin-bottom: 10px;
 `;
 
 const SubTitle = styled.Text`
   font-size: 14px;
   font-weight: bold;
-  color: #ffffff;
+  color: ${azulDois};
 `;
 
 const Buttons = styled.View`

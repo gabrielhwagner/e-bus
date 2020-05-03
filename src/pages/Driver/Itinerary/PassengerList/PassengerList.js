@@ -1,67 +1,17 @@
-// import React, { useState } from 'react';
-// import { ScrollView, Alert } from 'react-native';
-
-// import { Header, PassengerCard } from '~/components';
-// import { Container, Item, Title } from './PassengerList.styles';
-// import { getPassageirosItinerario } from '~/mocks/Itinerarios';
-
-// export default function PassengerList() {
-//   const [passengers, setPassengers] = useState(getPassageirosItinerario());
-
-//   function removePassenger(id) {
-//     const newList = passengers.passageiros.filter(
-//       passenger => passenger.id !== id,
-//     );
-//     setPassengers({
-//       ...passengers,
-//       passageiros: newList,
-//     });
-//   }
-
-//   function openAlert(id, name) {
-//     Alert.alert(
-//       passengers.descricao,
-//       `Deseja remover ${name}?`,
-//       [
-//         {
-//           text: 'Cancelar',
-//           onPress: () => {},
-//           style: 'cancel',
-//         },
-//         {
-//           text: 'Sim',
-//           onPress: () => removePassenger(id),
-//         },
-//       ],
-//       { cancelable: false },
-//     );
-//   }
-
-//   return (
-//     <Container>
-//       <Header title="Passageiros" />
-//       <Title>{passengers.descricao} - 15/05</Title>
-//       <ScrollView>
-//         {passengers.passageiros.map(passenger => (
-//           <Item key={passenger.id}>
-//             <PassengerCard
-//               onRemove={() => openAlert(passenger.id, passenger.nome)}
-//               passenger={passenger}
-//             />
-//           </Item>
-//         ))}
-//       </ScrollView>
-//     </Container>
-//   );
-// }
-
 import React, { Component } from 'react';
-import { FlatList, Alert } from 'react-native';
+import { FlatList, Alert, StyleSheet, View } from 'react-native';
 import { observer, inject } from 'mobx-react';
 
 import { getDateNowBR } from '~/utils';
 import { Header, PassengerCard } from '~/components';
-import { Container, Item, Title, EmptyMessage } from './PassengerList.styles';
+import {
+  Container,
+  Item,
+  Title,
+  EmptyMessage,
+  Background,
+} from './PassengerList.styles';
+import background from '~/assets/images/menor.png';
 
 @inject('store')
 @observer
@@ -126,6 +76,7 @@ class PassengerList extends Component {
   render() {
     return (
       <Container>
+        <Background resizeMode={'cover'} source={background} />
         <Header title="Passageiros" />
         <Title>{`${
           this.driverStore.itinerarySelected.descricao
@@ -140,10 +91,12 @@ class PassengerList extends Component {
           }
           renderItem={({ item }) => (
             <Item>
-              <PassengerCard
-                onRemove={() => this.openAlert(item.id, item.nome)}
-                passenger={item}
-              />
+              <View style={styles.description}>
+                <PassengerCard
+                  onRemove={() => this.openAlert(item.id, item.nome)}
+                  passenger={item}
+                />
+              </View>
             </Item>
           )}
         />
@@ -151,5 +104,20 @@ class PassengerList extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  description: {
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: 3.84,
+    elevation: 6,
+  },
+});
 
 export default PassengerList;
