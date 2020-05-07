@@ -13,7 +13,7 @@ class ItineraryService {
   }
 
   searchPassengerItinerary(id, day) {
-    const url = `${URL_API}/itinerary/${id}/passenger?day=2020-05-04`;
+    const url = `${URL_API}/itinerary/${id}/passenger?day=${day}`;
     return axios.get(url);
   }
 

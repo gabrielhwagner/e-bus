@@ -13,7 +13,7 @@ import {
   EmptyMessage,
   Background,
 } from './Absence.styles';
-import background from '~/assets/images/menor.png';
+import background from '~/assets/images/background/menor.jpg';
 
 @inject('store')
 @observer

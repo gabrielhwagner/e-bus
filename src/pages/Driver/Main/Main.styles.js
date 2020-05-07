@@ -21,7 +21,7 @@ const Icon = styled.ImageBackground`
   opacity: 0.8;
 `;
 
-const Item = styled.View`
+const Item = styled.TouchableOpacity`
   width: ${Dimensions.get('window').width - 80};
   height: ${Dimensions.get('window').height - 300};
   background-color: #fff;

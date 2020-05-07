@@ -183,21 +183,21 @@ class Go extends Component {
         {this.state.informations !== null && (
           <View style={styles.description}>
             <View>
-              <Text style={styles.title}>
+              <Text numberOfLines={1} style={styles.title}>
                 Nome:
                 <Text style={styles.response}>
                   {' '}
                   {this.driverStore.passengerActive.nome}
                 </Text>
               </Text>
-              <Text style={styles.title}>
+              <Text numberOfLines={1} style={styles.title}>
                 Tempo médio:
                 <Text style={styles.response}>
                   {' '}
                   {this.state.informations.duration} h
                 </Text>
               </Text>
-              <Text style={styles.title}>
+              <Text numberOfLines={1} style={styles.title}>
                 Distância total:
                 <Text style={styles.response}>
                   {' '}
@@ -212,18 +212,23 @@ class Go extends Component {
                 title="Finalizar"
               />
             ) : (
-              <>
-                <Button
-                  style={styles.button}
-                  onPress={() => this.sendStatusPassenger('NAO_EMBARCOU')}
-                  title="Não embarcou"
-                />
-                <Button
-                  style={styles.button}
-                  onPress={() => this.sendStatusPassenger('EMBARCOU')}
-                  title="Embarcou"
-                />
-              </>
+              <View style={styles.buttons}>
+                <View style={styles.but}>
+                  <Button
+                    style={styles.button}
+                    onPress={() => this.sendStatusPassenger('NAO_EMBARCOU')}
+                    title="Não embarcou"
+                  />
+                </View>
+                <View style={styles.but}>
+                  <Button
+                    style={styles.button}
+                    color={azul}
+                    onPress={() => this.sendStatusPassenger('EMBARCOU')}
+                    title="Embarcou"
+                  />
+                </View>
+              </View>
             )}
             {this.state.loading && (
               <View style={styles.loading}>
@@ -270,6 +275,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
+    backgroundColor: '#534543',
     fontWeight: 'bold',
     color: azul,
   },
@@ -280,6 +286,13 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
+  },
+  but: {
+    width: '47%',
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   loading: {
     position: 'absolute',

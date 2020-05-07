@@ -1,27 +1,35 @@
 import React, { useState } from 'react';
-import { StatusBar, Dimensions, Text, View, StyleSheet } from 'react-native';
+import { StatusBar, Dimensions, View } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+import { useNavigation } from '@react-navigation/native';
 
-import background from '~/assets/images/background.png';
-import icon from '~/assets/images/37280.jpg';
+import background from '~/assets/images/background/background.jpg';
+import itinerarios from '~/assets/images/itinerarios.png';
 
 import { verde } from '~/assets/css/Colors';
 import { Container, Icon, Item, Background, Title } from './Main.styles';
 import { Header } from '~/components';
 
-function Card() {
+function Card({ item }, navigation) {
   return (
     <View>
-      <Item>
-        <Title>Itinerários</Title>
-        <Icon resizeMode={'contain'} source={icon} />
+      <Item activeOpacity={1} onPress={() => navigation.navigate(item.route)}>
+        <Title>{item.name}</Title>
+        <Icon resizeMode={'contain'} source={item.img} />
       </Item>
     </View>
   );
 }
 
 export default function Main() {
-  const t = ['', '', ''];
+  const navigation = useNavigation();
+  const itens = [
+    {
+      name: 'Itinerários',
+      route: 'Itinerary',
+      img: itinerarios,
+    },
+  ];
   const [slide, setSlide] = useState(0);
   return (
     <Container>
@@ -30,8 +38,8 @@ export default function Main() {
         <Header title="Home" />
         <Carousel
           layout={'stack'}
-          data={t}
-          renderItem={Card}
+          data={itens}
+          renderItem={item => Card(item, navigation)}
           contentContainerCustomStyle={{
             alignItems: 'center',
           }}
@@ -40,7 +48,7 @@ export default function Main() {
           onSnapToItem={index => setSlide(index)}
         />
         <Pagination
-          dotsLength={t.length}
+          dotsLength={itens.length}
           activeDotIndex={slide}
           dotStyle={{
             width: 10,

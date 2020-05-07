@@ -3,20 +3,20 @@ import { StatusBar, Dimensions, Text, View, StyleSheet } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { useNavigation } from '@react-navigation/native';
 
-import background from '~/assets/images/background.png';
-import icon from '~/assets/images/37280.jpg';
+import background from '~/assets/images/background/background.jpg';
+import ausencia from '~/assets/images/ausencia.png';
+import itinerarios from '~/assets/images/itinerarios.png';
 
 import { verde } from '~/assets/css/Colors';
 import { Container, Icon, Item, Background, Title } from './Main.styles';
 import { Header } from '~/components';
 
 function Card({ item }, navigation) {
-  console.log({ item, navigation });
   return (
     <View>
       <Item activeOpacity={1} onPress={() => navigation.navigate(item.route)}>
         <Title>{item.name}</Title>
-        <Icon resizeMode={'contain'} source={icon} />
+        <Icon resizeMode={'contain'} source={item.img} />
       </Item>
     </View>
   );
@@ -28,10 +28,12 @@ export default function Main() {
     {
       name: 'Itinerários',
       route: 'Itinerary',
+      img: itinerarios,
     },
     {
       name: 'Ausências',
       route: 'Absence',
+      img: ausencia,
     },
   ];
   const [slide, setSlide] = useState(0);

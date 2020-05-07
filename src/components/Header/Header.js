@@ -16,7 +16,7 @@ export default function Header({ title }) {
         color={'#fff'}
       />
       <Title>{title}</Title>
-      <Icon name={'bell-o'} size={28} color={'#fff'} />
+      <Icon name={'bell-o'} size={28} color={'transparent'} />
     </Container>
   );
 }

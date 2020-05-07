@@ -60,7 +60,7 @@ export default function() {
         options={{
           drawerLabel: 'Ausência',
           drawerIcon: ({ focused, color }) => (
-            <Icon name={'home'} size={27} color={color} />
+            <Icon name={'user-times'} size={27} color={color} />
           ),
         }}
       />

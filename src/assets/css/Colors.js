@@ -5,9 +5,9 @@ const lightOrange = '#F9BC4B';
 const orange = '#F89605';
 
 //opcao 2
-const verde = '#4AEEBD';
+const verde = '#00ebbf';
 const verdeDois = '#41CECD';
-const azul = '#2E7BF6';
+const azul = '#0080f9';
 const azulDois = '#36A0E5';
 
 const background = '#f1eff2';

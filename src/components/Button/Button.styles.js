@@ -5,7 +5,7 @@ import { azul, verde, azulDois, verdeDois } from '~/assets/css/Colors';
 const ButtonStyle = styled.TouchableOpacity`
   height: 45;
   border-radius: 10;
-  background-color: ${verde};
+  background-color: ${({ color }) => color || verde};
   justify-content: center;
   align-items: center;
 `;
