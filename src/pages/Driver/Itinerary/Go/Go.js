@@ -275,7 +275,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    backgroundColor: '#534543',
     fontWeight: 'bold',
     color: azul,
   },

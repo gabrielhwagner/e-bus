@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { observer, inject } from 'mobx-react';
 import OneSignal from 'react-native-onesignal'; // Import package from node modules
+import { PermissionsAndroid } from 'react-native';
 
 import AuthService from '~/services/AuthService';
 import ButtonDefault from '~/components/Button/Button';
@@ -34,6 +35,20 @@ class Login extends Component {
     }
   }
 
+  validateLocation = async () => {
+    const chckLocationPermission = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+    if (chckLocationPermission === PermissionsAndroid.RESULTS.GRANTED) {
+      this.login();
+    } else {
+      const response = await this.requestLocation();
+      if (response) {
+        this.login();
+      }
+    }
+  };
+
   login = async () => {
     try {
       this.setState({ loading: true });
@@ -53,6 +68,17 @@ class Login extends Component {
         Alert.alert('Usuário ou senha inválidos');
       }
       this.setState({ loading: false });
+    }
+  };
+
+  requestLocation = async () => {
+    try {
+      const response = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+      return response === PermissionsAndroid.RESULTS.GRANTED;
+    } catch (err) {
+      console.warn(err);
     }
   };
 
@@ -82,7 +108,7 @@ class Login extends Component {
               }
             />
             <ButtonDefault
-              onPress={() => this.login()}
+              onPress={() => this.validateLocation()}
               title="Entrar"
               loading={this.state.loading}
             />
