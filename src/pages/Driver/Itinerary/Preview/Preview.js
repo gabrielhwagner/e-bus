@@ -8,8 +8,8 @@ import { MapViewDiretions, Button } from '~/components';
 import { getPixelSize } from '~/utils';
 import { getDadosItinerario } from '~/mocks/Itinerarios';
 import { azul, dark } from '~/assets/css/Colors';
-import iconPassenger from '~/assets/images/marker.png';
-import iconUm from '~/assets/images/icon-college.png';
+import iconPassenger from '~/assets/images/markers/passenger.png';
+import iconSchool from '~/assets/images/markers/education.png';
 
 @inject('store')
 @observer
@@ -21,12 +21,13 @@ class Preview extends Component {
       userLocation: null,
       getIsComplete: false,
       itinerary: null,
+      cod: null,
     };
     this.mapView;
   }
 
   async componentDidMount() {
-    Geolocation.watchPosition(
+    const retorno = Geolocation.getCurrentPosition(
       ({ coords: { latitude, longitude } }) => {
         const userLocation = { latitude, longitude };
         this.setLocations(userLocation);
@@ -38,6 +39,8 @@ class Preview extends Component {
         distanceFilter: 50,
       },
     );
+
+    this.state.cod = retorno;
   }
 
   searchItineraryPoints = async () => {
@@ -56,10 +59,6 @@ class Preview extends Component {
     if (!this.state.getIsComplete) {
       this.searchItineraryPoints();
     }
-  }
-
-  componentWillUnmount() {
-    // Geolocation.stopObserving();
   }
 
   onReady = result => {
@@ -117,7 +116,7 @@ class Preview extends Component {
                 origin={this.state.userLocation}
                 waypoints={itinerarySelected.points}
                 destination={itinerarySelected.finalPoint}
-                optimizeWaypoints={false}
+                optimizeWaypoints={true}
                 onStart={() => {}}
                 onReady={this.onReady}
               />
@@ -142,7 +141,7 @@ class Preview extends Component {
                     itinerarySelected.finalPoint.endereco.longitude,
                   ),
                 }}
-                image={iconUm}
+                image={iconSchool}
                 title={itinerarySelected.finalPoint.nome}
                 description={itinerarySelected.finalPoint.tipo}
               />

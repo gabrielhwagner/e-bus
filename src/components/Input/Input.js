@@ -15,6 +15,7 @@ export default function InputText(props) {
             color: '#000000',
             borderBottomColor: '#fff',
           }}
+          secureTextEntry={props.secureTextEntry}
           onChangeText={e => props.onChange(e)}
         />
       </Item>

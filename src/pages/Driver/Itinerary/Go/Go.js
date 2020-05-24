@@ -9,8 +9,8 @@ import ItineraryService from '~/services/ItineraryService';
 import { getDateTimeNow } from '~/utils';
 import { MapViewDiretions, Button } from '~/components';
 import { azul, dark } from '~/assets/css/Colors';
-import iconPassenger from '~/assets/images/marker.png';
-import iconCar from '~/assets/images/icon-car.png';
+import iconPassenger from '~/assets/images/markers/passenger.png';
+import iconCar from '~/assets/images/markers/car.png';
 
 @inject('store')
 @observer
@@ -44,10 +44,6 @@ class Go extends Component {
         distanceFilter: 10,
       },
     );
-  }
-
-  componentWillUnmount() {
-    Geolocation.stopObserving();
   }
 
   async startItinerary() {
@@ -102,9 +98,7 @@ class Go extends Component {
     );
   }
 
-  //
   sendNotification() {
-    console.log('notificacao');
     const title = `Olá ${this.driverStore.passengerActive.nome}!`;
     const description = 'O motorista está a 5 minutos do seu endereço!';
     this.driverStore.sendNotification(title, description);
@@ -152,8 +146,7 @@ class Go extends Component {
           ref={ref => (this.mapView = ref)}
           style={styles.mapView}
           loadingEnabled
-          followUserLocation={true}
-          showsUserLocation>
+          followUserLocation={true}>
           {this.state.getIsComplete && (
             <>
               <MapViewDiretions
@@ -163,6 +156,7 @@ class Go extends Component {
                 onStart={() => {}}
                 onReady={this.onReady}
               />
+              <Marker coordinate={this.state.userLocation} icon={iconCar} />
               <Marker
                 coordinate={{
                   latitude: Number(

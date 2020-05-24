@@ -7,7 +7,6 @@ const Container = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-  background-color: ${dark};
 `;
 
 const Content = styled.View`
@@ -17,4 +16,14 @@ const Content = styled.View`
   padding: 10px;
 `;
 
-export { Container, Content };
+const Image = styled.Image`
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 20px;
+`;
+
+const Background = styled.ImageBackground`
+  flex: 1;
+`;
+
+export { Container, Content, Background, Image };

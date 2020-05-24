@@ -8,12 +8,15 @@ import {
 import { observer, inject } from 'mobx-react';
 import OneSignal from 'react-native-onesignal'; // Import package from node modules
 import { PermissionsAndroid } from 'react-native';
+import { Toast, Root } from 'native-base';
 
 import AuthService from '~/services/AuthService';
 import ButtonDefault from '~/components/Button/Button';
 import Input from '~/components/Input/Input';
 import { dark } from '~/assets/css/Colors';
-import { Container, Content } from './Login.styles';
+import { Container, Content, Background, Image } from './Login.styles';
+import background from '~/assets/images/background/background.jpg';
+import icon from '~/assets/images/icon.png';
 
 @inject('store')
 @observer
@@ -45,8 +48,18 @@ class Login extends Component {
       const response = await this.requestLocation();
       if (response) {
         this.login();
+      } else {
+        this.alert('O app precisa de sua localização!');
       }
     }
+  };
+
+  alert = message => {
+    Toast.show({
+      text: message,
+      buttonText: 'Ok',
+      type: 'danger',
+    });
   };
 
   login = async () => {
@@ -64,9 +77,7 @@ class Login extends Component {
       this.authStore.setAuth(data.user, data.token);
       this.props.navigation.navigate('Main');
     } catch (err) {
-      if (err.status === 401) {
-        Alert.alert('Usuário ou senha inválidos');
-      }
+      this.alert('Usuário ou senha inválidos');
       this.setState({ loading: false });
     }
   };
@@ -91,30 +102,38 @@ class Login extends Component {
 
   render() {
     return (
-      <Container>
-        <StatusBar barStyle="light-content" backgroundColor={dark} />
-        <KeyboardAvoidingView>
-          <Content>
-            <Input
-              value={this.authStore.email}
-              name="E-mail"
-              onChange={value => this.authStore.onChangeInputs('email', value)}
-            />
-            <Input
-              value={this.authStore.password}
-              name="Senha"
-              onChange={value =>
-                this.authStore.onChangeInputs('password', value)
-              }
-            />
-            <ButtonDefault
-              onPress={() => this.validateLocation()}
-              title="Entrar"
-              loading={this.state.loading}
-            />
-          </Content>
-        </KeyboardAvoidingView>
-      </Container>
+      <Root>
+        <Background resizeMode={'cover'} source={background}>
+          <Container>
+            <StatusBar barStyle="light-content" backgroundColor={dark} />
+            <KeyboardAvoidingView>
+              <Image resizeMode={'contain'} source={icon} />
+              <Content>
+                <Input
+                  value={this.authStore.email}
+                  name="E-mail"
+                  onChange={value =>
+                    this.authStore.onChangeInputs('email', value)
+                  }
+                />
+                <Input
+                  value={this.authStore.password}
+                  name="Senha"
+                  onChange={value =>
+                    this.authStore.onChangeInputs('password', value)
+                  }
+                  secureTextEntry
+                />
+                <ButtonDefault
+                  onPress={() => this.validateLocation()}
+                  title="Entrar"
+                  loading={this.state.loading}
+                />
+              </Content>
+            </KeyboardAvoidingView>
+          </Container>
+        </Background>
+      </Root>
     );
   }
 }
